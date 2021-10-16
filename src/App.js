@@ -4,6 +4,7 @@ import Map from './components/map';
 import './index.css'
 import Row from "react-bootstrap/Row";
 import Container  from "react-bootstrap/Container";
+import Error from './components/Error';
 
 class App extends React.Component{
   constructor(props){
@@ -11,7 +12,8 @@ class App extends React.Component{
     this.state = {
       cityName: '',
       placeObj: {},
-      cityMap: {}
+      cityMap: {},
+      hasError: false
     }
   }
   getPlace = async () => {
@@ -29,8 +31,12 @@ class App extends React.Component{
   }
   catch(error){
     console.log('there was an error: error');
+    this.setState({hasError:true});
   }
 
+}
+toggleError = () => {
+  this.setState({hasError:false});
 }
   render(){
   return (
@@ -49,7 +55,7 @@ class App extends React.Component{
      <h4>lon:{this.state.placeObj.lon}</h4></Row></Container>
       </div>}
       <Map cityMap={this.state.cityMap}/>
-      
+      {this.state.hasError && <Error toggleError={this.toggleError}/>}
     </>
     
   );
