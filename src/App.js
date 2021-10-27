@@ -5,6 +5,9 @@ import './index.css'
 import Row from "react-bootstrap/Row";
 import Container  from "react-bootstrap/Container";
 import Error from './components/Error';
+import WeatherList from './components/weather';
+
+// import Weather from './components/weather.js';
 
 class App extends React.Component{
   constructor(props){
@@ -13,21 +16,35 @@ class App extends React.Component{
       cityName: '',
       placeObj: {},
       cityMap: {},
-      hasError: false
+      hasError: false,
+      weatherForecast: [],
+      showWeather: false
     }
   }
   getPlace = async () => {
-    console.log('button Pressed');
+    
     console.log(process.env.REACT_APP_LOCATION_API_KEY)
     let URL =  `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_API_KEY}&q=${this.state.cityName}&format=json`;
     console.log(URL);
     //axios get request
     try{
     let placeData = await axios.get(URL);
+    console.log('place data', placeData);
     this.setState({placeObj:placeData.data[0]});
-    let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${this.state.placeObj.lat},${this.state.placeObj.lon}&zoom=14&size=400x400`
+    let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${this.state.placeObj.lat},${this.state.placeObj.lon}&zoom=10&size=400x400`
     this.setState({cityMap:mapURL});
     console.log('this is the map url',mapURL);
+
+
+
+    
+    let weatherUrl = await axios.get(`http://localhost:3001/weather?lat=${this.state.placeObj.lat}&lon=${this.state.placeObj.lon}`)
+    console.log('this is the data:', weatherUrl.data);
+    this.setState({weatherForecast: weatherUrl.data, showWeather: true});
+    // this.setState({showWeather: true});
+
+
+
   }
   catch(error){
     console.log('there was an error: error');
@@ -52,10 +69,22 @@ toggleError = () => {
       <Container fluid="xxl">
       <Row><h2>Here's the city:{this.state.placeObj.display_name}</h2>
     <h4>Lat:{this.state.placeObj.lat}</h4>
-     <h4>lon:{this.state.placeObj.lon}</h4></Row></Container>
+     <h4>lon:{this.state.placeObj.lon}</h4>
+     
+     </Row>
+     </Container>
       </div>}
       <Map cityMap={this.state.cityMap}/>
       {this.state.hasError && <Error toggleError={this.toggleError}/>}
+     
+      {
+        this.state.showWeather && this.state.weatherForecast && this.state.weatherForecast.map((weatherData, idx) => 
+        
+      <WeatherList key={idx} data={weatherData}/>)
+  }
+  
+  
+     
     </>
     
   );
