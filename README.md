@@ -20,10 +20,17 @@ TAs Michael Eclavea and google
 
 Name of feature: city explorer
 
+
+
+![Diagram Of how things went](Diagram.jpg)
+## deployed with
+[Netlify](city-explorer-oz.netlify.app)
+[Heroku](https://city-explorer-oz.herokuapp.com)
+
 Estimate of time needed to complete: 3 hours
 
-Start time: 
+Start time: weeks ago
 
-Finish time: _____
+Finish time: 11/1/2021
 
-Actual time needed to complete: _____
+Actual time needed to complete: ____cumalitive 4 hours_
