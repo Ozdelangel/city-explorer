@@ -18,7 +18,7 @@ In Progress
 TAs Michael Eclavea and google
 
 
-Name of feature: city explorer
+Name of feature: city explorer front end
 
 
 
