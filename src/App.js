@@ -42,12 +42,12 @@ class App extends React.Component{
 
 
     
-    let weatherUrl = await axios.get(`http://localhost:3001/weather?lat=${this.state.placeObj.lat}&lon=${this.state.placeObj.lon}`)
+    let weatherUrl = await axios.get(`${process.env.REACT_APP_SERVER}/weather?lat=${this.state.placeObj.lat}&lon=${this.state.placeObj.lon}`)
     console.log('this is the weather data:', weatherUrl.data);
     this.setState({weatherForecast: weatherUrl.data, showWeather: true});
     // this.setState({showWeather: true});
 
-    let movieUrl = await axios.get(`http://localhost:3001/movies?cityName=${this.state.cityName}`)
+    let movieUrl = await axios.get(`${process.env.REACT_APP_SERVER}/movies?cityName=${this.state.cityName}`)
     console.log('this is the movie data:', movieUrl.data);
     this.setState({moviePosters: movieUrl.data, showMovies: true});
     // this.setState({showWeather: true});
