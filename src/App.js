@@ -6,6 +6,8 @@ import Row from "react-bootstrap/Row";
 import Container  from "react-bootstrap/Container";
 import Error from './components/Error';
 import WeatherList from './components/weather';
+import MovieList from './components/movies';
+
 
 // import Weather from './components/weather.js';
 
@@ -18,7 +20,9 @@ class App extends React.Component{
       cityMap: {},
       hasError: false,
       weatherForecast: [],
-      showWeather: false
+      showWeather: false,
+      moviePosters: [],
+      showMovies: false
     }
   }
   getPlace = async () => {
@@ -39,10 +43,14 @@ class App extends React.Component{
 
     
     let weatherUrl = await axios.get(`http://localhost:3001/weather?lat=${this.state.placeObj.lat}&lon=${this.state.placeObj.lon}`)
-    console.log('this is the data:', weatherUrl.data);
+    console.log('this is the weather data:', weatherUrl.data);
     this.setState({weatherForecast: weatherUrl.data, showWeather: true});
     // this.setState({showWeather: true});
 
+    let movieUrl = await axios.get(`http://localhost:3001/movies?cityName=${this.state.cityName}`)
+    console.log('this is the movie data:', movieUrl.data);
+    this.setState({moviePosters: movieUrl.data, showMovies: true});
+    // this.setState({showWeather: true});
 
 
   }
@@ -74,14 +82,20 @@ toggleError = () => {
      </Row>
      </Container>
       </div>}
-      <Map cityMap={this.state.cityMap}/>
+      <Map cityMap={this.state.cityMap} style={{ width: '200px' }}/>
       {this.state.hasError && <Error toggleError={this.toggleError}/>}
      
       {
-        this.state.showWeather && this.state.weatherForecast && this.state.weatherForecast.map((weatherData, idx) => 
-        
-      <WeatherList key={idx} data={weatherData}/>)
+      this.state.showWeather && this.state.weatherForecast && this.state.weatherForecast.map((weatherData, idx) => 
+      
+    <WeatherList key={idx} data={weatherData}/>)
   }
+  {
+      this.state.showMovies && this.state.moviePosters.map((movieData, idx) => 
+      
+    <MovieList key={idx} movieData={movieData}/>)
+  }
+
   
   
      
